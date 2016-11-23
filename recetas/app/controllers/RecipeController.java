@@ -1,7 +1,12 @@
 package controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
+import models.Ingredient;
+import models.Recipe;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -11,27 +16,30 @@ public class RecipeController extends Controller{
 	{
 	
 		JsonNode body = request().body().asJson();
-		String titulo = body.get("titulo").asText();
-		String description = body.get("description").asText();
-		String preparedTime = body.get("preparedTime").asText();
+		Recipe recipe = new Recipe();
+		recipe.setTitle(body.get("title").asText());
+		recipe.setDescription(body.get("description").asText());
+		recipe.setPreparationTime(body.get("preparedTime").asText());
+		recipe.save();
 		
-		for(JsonNode node : body.get("ingredients"))
+		ArrayNode array = (ArrayNode) body.get("ingredients");
+
+		
+		for(JsonNode node1 : array)
 		{
 			
-			String ingredientName = node.get("name").asText();
-			String descriptionName = node.get("description").asText();
-			String cuantity = node.get("cuantity").asText(); 
+			Ingredient newIngredient = new Ingredient();
 			
+			newIngredient = new Ingredient();
+			newIngredient.setName(node1.get("name").asText());
+			newIngredient.setDescription(node1.get("description").asText());
+			newIngredient.addRecipe(recipe);
+			newIngredient.save();
+			recipe.addIngredient(newIngredient);
 			
 		}
 		
-		
-		
-		return ok("created");
-		
-		
-		
-		
+		return ok("created");	
 		
 	}
 	
@@ -43,7 +51,9 @@ public class RecipeController extends Controller{
 		return ok("removed");
 	}
 	
-	public Result listRecipes() {	
+	public Result listRecipes() {
+		List<Recipe> recipes = Recipe.findAll();
+		System.out.println(recipes);
 		return ok("ok");
 	}
 	

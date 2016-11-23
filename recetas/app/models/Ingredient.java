@@ -1,7 +1,11 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import com.avaje.ebean.Model;
 
@@ -20,7 +24,8 @@ public class Ingredient extends Model
 	@Required
 	private String description;
 	
-	
+	@ManyToMany(mappedBy = "ingredients")
+    public List<Recipe> recipes = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -37,6 +42,10 @@ public class Ingredient extends Model
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public void addRecipe(Recipe recipe){
+		this.recipes.add(recipe);
 	}
 
 	@Override

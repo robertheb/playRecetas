@@ -1,10 +1,14 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import com.avaje.ebean.Model;
 
@@ -26,10 +30,16 @@ public class Recipe extends Model{
 	@Required
 	private String description;
 	
-	@Required
-	private Map<Long, String> ingredients = new HashMap<>();
-
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Ingredient> ingredients = new ArrayList<>();
 	
+
+	private static final Find<Long, Recipe> find = new Find<Long, Recipe>() {
+	};
+	
+	public static List<Recipe> findAll() {
+		return find.all();
+	}
 	
 	public Long getId() {
 		return id;
@@ -58,16 +68,9 @@ public class Recipe extends Model{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public Map<Long, String> getIngredients() {
-		return ingredients;
-	}
-
-	public void setIngredients(Long id, String quantity ) 
-	{
 	
-		//Buscar en la Base de datos si tenemos o no el ingrediente
-		
+	public void addIngredient(Ingredient ingredient){
+		this.ingredients.add(ingredient);
 	}
 
 
@@ -77,13 +80,6 @@ public class Recipe extends Model{
 		return "Recipe [id=" + id + ", title=" + title + ", preparationTime=" + preparationTime + ", description="
 				+ description + ", ingredients=" + ingredients + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 
 }
