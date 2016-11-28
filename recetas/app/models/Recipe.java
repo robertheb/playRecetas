@@ -71,6 +71,7 @@ public class Recipe extends Model{
 	
 	public void addIngredient(Ingredient ingredient){
 		this.ingredients.add(ingredient);
+		ingredient.recipes.add(this);
 	}
 
 

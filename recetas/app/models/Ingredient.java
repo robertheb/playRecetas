@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -25,7 +26,8 @@ public class Ingredient extends Model
 	private String description;
 	
 	@ManyToMany(mappedBy = "ingredients")
-    public List<Recipe> recipes = new ArrayList<>();
+    public Set<Recipe> recipes;
+	//public List<Recipe> recipes = new ArrayList<>();
 	
 	public Long getId() {
 		return id;

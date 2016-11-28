@@ -14,31 +14,32 @@ public class RecipeController extends Controller{
 
 	public Result create() 
 	{
-	
+		System.out.println("entra aqui");
+		System.out.println(request().toString());
 		JsonNode body = request().body().asJson();
+		System.out.println(body);
+		
 		Recipe recipe = new Recipe();
+		Ingredient newIngredient = new Ingredient();
+		
 		recipe.setTitle(body.get("title").asText());
 		recipe.setDescription(body.get("description").asText());
 		recipe.setPreparationTime(body.get("preparedTime").asText());
-		recipe.save();
+		
 		
 		ArrayNode array = (ArrayNode) body.get("ingredients");
 
 		
 		for(JsonNode node1 : array)
 		{
-			
-			Ingredient newIngredient = new Ingredient();
-			
 			newIngredient = new Ingredient();
 			newIngredient.setName(node1.get("name").asText());
 			newIngredient.setDescription(node1.get("description").asText());
-			newIngredient.addRecipe(recipe);
 			newIngredient.save();
 			recipe.addIngredient(newIngredient);
-			
 		}
 		
+		recipe.save();
 		return ok("created");	
 		
 	}
