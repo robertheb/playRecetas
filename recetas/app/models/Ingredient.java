@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import play.data.validation.Constraints.Required;
 
@@ -26,6 +27,7 @@ public class Ingredient extends Model
 	private String description;
 	
 	@ManyToMany(mappedBy = "ingredients")
+	@JsonIgnore
     public Set<Recipe> recipes;
 	//public List<Recipe> recipes = new ArrayList<>();
 	

@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import play.data.validation.Constraints.Required;
+import play.libs.Json;
 
 
 @Entity
@@ -73,7 +75,22 @@ public class Recipe extends Model{
 		this.ingredients.add(ingredient);
 		ingredient.recipes.add(this);
 	}
+	
+	
 
+	
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	
+
+	public JsonNode toJson() 
+	{
+		return Json.toJson(this);
+	}
+	
+	
 
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.Ingredient;
 import models.Recipe;
@@ -40,6 +41,21 @@ public class RecipeController extends Controller{
 		}
 		
 		recipe.save();
+		
+		if (request().accepts("application/json")){
+		
+			
+			return ok(recipe.toJson());
+			
+		}
+		else if(request().accepts("application/xml")){
+			
+			return ok(views.xml.recipe.render(recipe));
+		
+		}
+		
+		
+		
 		return ok("created");	
 		
 	}
