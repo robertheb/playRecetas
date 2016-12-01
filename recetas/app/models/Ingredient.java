@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.Model.Find;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import play.data.validation.Constraints.Required;
@@ -30,6 +31,15 @@ public class Ingredient extends Model
 	@JsonIgnore
     public Set<Recipe> recipes;
 	//public List<Recipe> recipes = new ArrayList<>();
+	
+	private static final Find<Long,Ingredient> find =new Find<Long,Ingredient>(){};
+	
+	public static List<Ingredient> getByName(String ingredient){
+		
+		 return find.where().eq("name",ingredient ).findList();
+		 
+	}
+	
 	
 	public Long getId() {
 		return id;

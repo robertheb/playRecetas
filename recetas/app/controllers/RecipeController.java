@@ -33,11 +33,22 @@ public class RecipeController extends Controller{
 		
 		for(JsonNode node1 : array)
 		{
-			newIngredient = new Ingredient();
-			newIngredient.setName(node1.get("name").asText());
-			newIngredient.setDescription(node1.get("description").asText());
-			newIngredient.save();
-			recipe.addIngredient(newIngredient);
+			List<Ingredient> ingredientList = Ingredient.getByName(node1.get("name").asText().trim().toLowerCase());
+			if (ingredientList.isEmpty())
+			{
+				System.out.println("Ingredient añadido a la db");
+				newIngredient = new Ingredient();
+				newIngredient.setName(node1.get("name").asText().trim().toLowerCase());
+				newIngredient.setDescription(node1.get("description").asText());
+				newIngredient.save();
+				recipe.addIngredient(newIngredient);
+			}else
+			{
+				System.out.println("Ingredient ya en la db");
+				recipe.addIngredient(ingredientList.get(0));
+			}
+			
+			
 		}
 		
 		recipe.save();
