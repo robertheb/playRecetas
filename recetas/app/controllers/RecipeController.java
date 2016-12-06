@@ -41,6 +41,7 @@ public class RecipeController extends Controller{
 				newIngredient.setName(node1.get("name").asText().trim().toLowerCase());
 				newIngredient.setDescription(node1.get("description").asText());
 				newIngredient.save();
+				
 				recipe.addIngredient(newIngredient);
 			}else
 			{
@@ -72,17 +73,69 @@ public class RecipeController extends Controller{
 	}
 	
 	public Result retrieve(Long id) {
-		return ok("recipe");
+		
+		Recipe recipe = Recipe.getById(id);
+		if (recipe != null) // Recipe Exist
+		{
+			
+			if (request().accepts("application/json")){
+				
+				
+				return ok(recipe.toJson());
+				
+			}
+			else if(request().accepts("application/xml")){
+				
+				return ok(views.xml.recipe.render(recipe));
+			
+			}
+		}
+		return ok("No se ha encontrado receta con ese id");
 	}
 	
-	public Result remove(long id) {
-		return ok("removed");
+	public Result remove(long id) 
+	{
+		
+		Recipe recipe = Recipe.getById(id);
+		System.out.println(recipe);
+		if (recipe != null)
+		{
+			
+			
+			recipe.delete();
+			return ok("Borrado con exito");
+			
+		}
+		
+		return ok("Error al borrar el objeto");
 	}
 	
-	public Result listRecipes() {
+	public Result listRecipes() 
+	{
+		
 		List<Recipe> recipes = Recipe.findAll();
-		System.out.println(recipes);
-		return ok("ok");
+		
+		if (request().accepts("application/json"))
+		{
+			ArrayNode array = new play.libs.Json().newArray();
+			
+			
+			for (Recipe recipe1 : recipes)
+			{
+				
+				array.add(recipe1.toJsonList());
+				
+			}
+			
+			return ok (array);
+		}else if(request().accepts("application/xml")){
+			
+			return ok(views.xml.recipes.render(recipes));
+		
+		}
+		
+		return ok("Solo de admite Json o XML");
+		
 	}
 	
 	public Result update(String id) {

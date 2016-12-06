@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import play.data.validation.Constraints.Required;
 import play.libs.Json;
@@ -41,6 +42,10 @@ public class Recipe extends Model{
 	
 	public static List<Recipe> findAll() {
 		return find.all();
+	}
+	
+	public static Recipe getById(Long id){
+		 return find.byId(id);
 	}
 	
 	public Long getId() {
@@ -89,6 +94,18 @@ public class Recipe extends Model{
 	{
 		return Json.toJson(this);
 	}
+	
+	public JsonNode toJsonList() 
+	{
+		
+		ObjectNode node = play.libs.Json.newObject();
+		node.put("id", this.id);
+		node.put("title", this.title);
+		node.put("description", this.description);
+		return node;
+		
+	}
+	
 	
 	
 
