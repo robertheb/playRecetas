@@ -96,18 +96,7 @@ public class RecipeController extends Controller{
 	public Result remove(long id) 
 	{
 		
-		Recipe recipe = Recipe.getById(id);
-		System.out.println(recipe);
-		if (recipe != null)
-		{
-			
-			
-			recipe.delete();
-			return ok("Borrado con exito");
-			
-		}
 		
-		return ok("Error al borrar el objeto");
 	}
 	
 	public Result listRecipes() 
