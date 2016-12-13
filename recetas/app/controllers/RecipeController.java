@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -93,8 +95,26 @@ public class RecipeController extends Controller{
 		return ok("No se ha encontrado receta con ese id");
 	}
 	
-	public Result remove(long id) 
+	public Result remove(Long id) 
 	{
+		//Obtenemos la recipe con esa id
+		Recipe recipe = Recipe.getById(id);
+		
+		List<Ingredient> ingredientsList = recipe.getIngredients();
+		
+		if (recipe != null)// Existe la receta
+		{
+			if (recipe.delete()){
+				return ok("Receta eliminada con exito");
+			}
+			else{
+				return ok("Error a la hora de eliminar la receta");
+			}
+		}
+		
+		
+		return ok("Receta no encontrada");
+				
 		
 		
 	}
@@ -110,26 +130,82 @@ public class RecipeController extends Controller{
 			
 			
 			for (Recipe recipe1 : recipes)
-			{
-				
+			{	
 				array.add(recipe1.toJsonList());
-				
 			}
 			
 			return ok (array);
-		}else if(request().accepts("application/xml")){
 			
+		}else if(request().accepts("application/xml"))
+		{	
 			return ok(views.xml.recipes.render(recipes));
-		
 		}
 		
 		return ok("Solo de admite Json o XML");
 		
 	}
 	
-	public Result update(String id) {
+	public Result update(Long id) {
 
-    	return ok("No existe ese usuario");
+		Recipe recipe = Recipe.getById(id);
+		JsonNode body = request().body().asJson();
+		
+		
+	
+		if (body.has("title"))
+		{
+			recipe.setTitle(body.get("title").asText());
+			
+		}if (body.has("preparationTime"))
+		{
+			recipe.setPreparationTime(body.get("preparationTime").asText());
+			
+			
+		}if (body.has("description"))
+		{
+			recipe.setDescription(body.get("description").asText());
+			System.out.println("Description");
+			
+		}if (body.has("ingredients"))
+		{
+			
+			System.out.println("Ingredients");
+			ArrayNode array = (ArrayNode) body.get("ingredients");
+			List<Ingredient> listIngredients = new LinkedList<>();
+			for(JsonNode node1 : array)
+			{
+	
+				List<Ingredient> ingredientList = Ingredient.getByName(node1.get("name").asText().trim().toLowerCase());
+				if (ingredientList.isEmpty())
+				{
+					System.out.println("Ingredient añadido a la db");
+					Ingredient newIngredient = new Ingredient();
+					newIngredient.setName(node1.get("name").asText().trim().toLowerCase());
+					newIngredient.setDescription(node1.get("description").asText());
+					newIngredient.save();
+					
+					listIngredients.add(newIngredient);
+					
+				}else
+				{
+					System.out.println("Ingredient ya en la db");
+					listIngredients.add(ingredientList.get(0));
+					
+				}
+				
+				
+					
+					
+			}
+			
+			
+			recipe.setIngredients(listIngredients);
+			System.out.println(recipe.getIngredients().get(0));	
+			recipe.save();
+			
+		}
+			
+			return ok ("Actualizada");
     	
     }
 }

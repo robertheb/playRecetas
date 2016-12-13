@@ -82,8 +82,10 @@ public class Recipe extends Model{
 	}
 	
 	
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
 
-	
 	public List<Ingredient> getIngredients() {
 		return ingredients;
 	}
