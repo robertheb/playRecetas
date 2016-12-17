@@ -48,6 +48,12 @@ public class Recipe extends Model{
 		 return find.byId(id);
 	}
 	
+	public static List<Recipe> getByName(String recipeName){
+		
+		 return find.where().eq("title",recipeName ).findList();
+		 
+	}
+	
 	public Long getId() {
 		return id;
 	}

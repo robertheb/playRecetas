@@ -8,6 +8,9 @@ GET		/recipes						controllers.RecipeController.listRecipes
 #Return the recipe with the given id
 GET		/recipe/:id					controllers.RecipeController.retrieve(id: Long)
 
+#Return the recipe with the given id
+GET		/recipe/name/:name					controllers.RecipeController.getByName(name: String)
+
 #Create a new recipe
 POST	/recipes						controllers.RecipeController.create
 

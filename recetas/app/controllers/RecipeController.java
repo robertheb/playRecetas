@@ -12,6 +12,7 @@ import models.Ingredient;
 import models.Recipe;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Results;
 
 public class RecipeController extends Controller{
 
@@ -21,6 +22,21 @@ public class RecipeController extends Controller{
 		System.out.println(request().toString());
 		JsonNode body = request().body().asJson();
 		System.out.println(body);
+		
+		if (body.isNull()){
+			
+			
+			return Results.badRequest();
+			
+			
+		}
+		
+		List<Recipe> listRecipes = Recipe.getByName(body.get("title").asText());
+		if (!listRecipes.isEmpty()){
+			
+			return Results.status(CONFLICT);
+			
+		}	
 		
 		Recipe recipe = new Recipe();
 		Ingredient newIngredient = new Ingredient();
@@ -67,10 +83,11 @@ public class RecipeController extends Controller{
 			return ok(views.xml.recipe.render(recipe));
 		
 		}
-		
-		
-		
-		return ok("created");	
+		else{
+			
+			return Results.status(406);
+			
+		}
 		
 	}
 	
@@ -90,9 +107,13 @@ public class RecipeController extends Controller{
 				
 				return ok(views.xml.recipe.render(recipe));
 			
+			}else{
+				
+				return Results.status(406);
+				
 			}
 		}
-		return ok("No se ha encontrado receta con ese id");
+		return Results.notFound();
 	}
 	
 	public Result remove(Long id) 
@@ -105,15 +126,17 @@ public class RecipeController extends Controller{
 		if (recipe != null)// Existe la receta
 		{
 			if (recipe.delete()){
-				return ok("Receta eliminada con exito");
+				return ok();
 			}
 			else{
-				return ok("Error a la hora de eliminar la receta");
+				
+				return internalServerError();
+				
 			}
 		}
 		
 		
-		return ok("Receta no encontrada");
+		return Results.notFound();
 				
 		
 		
@@ -140,8 +163,12 @@ public class RecipeController extends Controller{
 		{	
 			return ok(views.xml.recipes.render(recipes));
 		}
+		else{
+			
+			return Results.status(406);
+			
+		}
 		
-		return ok("Solo de admite Json o XML");
 		
 	}
 	
@@ -150,6 +177,12 @@ public class RecipeController extends Controller{
 		Recipe recipe = Recipe.getById(id);
 		JsonNode body = request().body().asJson();
 		
+		
+		if (recipe == null){
+			
+			return Results.notFound();
+			
+		}
 		
 	
 		if (body.has("title"))
@@ -205,7 +238,45 @@ public class RecipeController extends Controller{
 			
 		}
 			
-			return ok ("Actualizada");
+			return ok ();
     	
     }
+	
+	
+	public Result getByName(String name){
+		
+		System.out.println(name);
+		List<Recipe> listRecipes = Recipe.getByName(name);
+		
+		
+		if(listRecipes.isEmpty()) // No hemos encontrado la receta
+		{
+		
+			return Results.notFound();
+			
+			
+		}else{ //Receta encontrada
+			
+			Recipe recipe = listRecipes.get(0);
+			
+			if (request().accepts("application/json"))
+			{
+				return ok (recipe.toJsonList());
+				
+				
+			}else if(request().accepts("application/xml"))
+			{	
+				return ok(views.xml.recipe.render(recipe));
+			}
+			else{
+				
+				return Results.status(406);
+				
+			}
+			
+			
+		}
+		
+	}
+	
 }
