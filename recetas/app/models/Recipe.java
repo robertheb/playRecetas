@@ -36,6 +36,9 @@ public class Recipe extends Model{
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Ingredient> ingredients = new ArrayList<>();
 	
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Tag> tags = new ArrayList<>();
+	
 
 	private static final Find<Long, Recipe> find = new Find<Long, Recipe>() {
 	};
@@ -46,6 +49,7 @@ public class Recipe extends Model{
 	
 	public static Recipe getById(Long id){
 		 return find.byId(id);
+		 
 	}
 	
 	public static List<Recipe> getByName(String recipeName){
@@ -53,6 +57,16 @@ public class Recipe extends Model{
 		 return find.where().eq("title",recipeName ).findList();
 		 
 	}
+
+	
+	public static List<Recipe> findRecipesByTag(Tag tag){
+		
+		
+		return find.where().eq("tags.id", tag.getId()).findList();
+				
+		
+	}
+	
 	
 	public Long getId() {
 		return id;
@@ -87,6 +101,11 @@ public class Recipe extends Model{
 		ingredient.recipes.add(this);
 	}
 	
+	public void addTag(Tag tag){
+		this.tags.add(tag);
+		tag.recipes.add(this);
+	}
+	
 	
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
@@ -95,9 +114,16 @@ public class Recipe extends Model{
 	public List<Ingredient> getIngredients() {
 		return ingredients;
 	}
+	
+	
 
 	
 
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	
 	public JsonNode toJson() 
 	{
 		return Json.toJson(this);
@@ -113,16 +139,18 @@ public class Recipe extends Model{
 		return node;
 		
 	}
-	
-	
-	
-
 
 	@Override
 	public String toString() {
 		return "Recipe [id=" + id + ", title=" + title + ", preparationTime=" + preparationTime + ", description="
-				+ description + ", ingredients=" + ingredients + "]";
+				+ description + ", ingredients=" + ingredients + ", tags=" + tags + "]";
 	}
+	
+	
+	
+
+
+	
 	
 
 }

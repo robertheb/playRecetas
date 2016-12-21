@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.Ingredient;
 import models.Recipe;
+import models.Tag;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Results;
@@ -46,6 +48,35 @@ public class RecipeController extends Controller{
 		recipe.setPreparationTime(body.get("preparedTime").asText());
 		
 		
+		ArrayNode arrayTags = (ArrayNode) body.get("tags");
+		
+		
+		
+		
+
+		for(JsonNode node2 : arrayTags)
+		{
+			
+			
+			List<Tag> tagsList = Tag.getByName(node2.asText().trim().toLowerCase());
+			if (tagsList.isEmpty())
+			{
+				System.out.println("Ingredient añadido a la db");
+				Tag tag = new Tag();
+				tag.setName(node2.asText().trim().toLowerCase());
+				tag.save();
+				recipe.addTag(tag);
+			}else
+			{
+				System.out.println("Ingredient ya en la db");
+				recipe.addTag(tagsList.get(0));
+			}
+			
+			
+		}
+		
+	
+		
 		ArrayNode array = (ArrayNode) body.get("ingredients");
 
 		
@@ -71,6 +102,9 @@ public class RecipeController extends Controller{
 		}
 		
 		recipe.save();
+		
+		
+		
 		
 		if (request().accepts("application/json")){
 		
@@ -276,6 +310,49 @@ public class RecipeController extends Controller{
 			
 			
 		}
+		
+	}
+	
+	public Result getRecipesByTag(String tagName){
+		
+		List<Tag> tag = Tag.getByName(tagName);
+		
+		if (tag.isEmpty()){
+			
+			return Results.notFound();
+			
+		}else{
+		
+			
+			List<Recipe> recipes = Recipe.findRecipesByTag(tag.get(0));
+			
+			
+			if (request().accepts("application/json"))
+			{
+				ArrayNode array = new play.libs.Json().newArray();
+				
+				
+				for (Recipe recipe1 : recipes)
+				{	
+					array.add(recipe1.toJsonList());
+				}
+				
+				return ok (array);
+				
+			}else if(request().accepts("application/xml"))
+			{	
+				return ok(views.xml.recipes.render(recipes));
+			}
+			else{
+				
+				return Results.status(406);
+				
+			}
+			
+			
+			
+		}
+		
 		
 	}
 	
