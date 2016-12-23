@@ -50,9 +50,6 @@ public class RecipeController extends Controller{
 		
 		ArrayNode arrayTags = (ArrayNode) body.get("tags");
 		
-		
-		
-		
 
 		for(JsonNode node2 : arrayTags)
 		{
