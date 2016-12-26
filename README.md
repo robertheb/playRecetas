@@ -24,6 +24,7 @@ To get JSON response: accept: application/json
 -   Method: **GET**
 -   URL /recipe/name/:name
 -   Examlpe: 
+
 ### -   Create a new recipe
 -   Method: **POST**
 -   URL /recipes
