@@ -8,7 +8,7 @@ GET		/recipes						controllers.RecipeController.listRecipes
 #Return the recipe with the given id
 GET		/recipe/:id					controllers.RecipeController.retrieve(id: Long)
 
-#Return the recipe with the given id
+#Return the recipe with the given name
 GET		/recipe/name/:name					controllers.RecipeController.getByName(name: String)
 
 #Create a new recipe
@@ -20,5 +20,5 @@ DELETE	/recipe/:id					controllers.RecipeController.remove(id: Long)
 #Update the recipe with the given id
 PUT		/recipe/:id					controllers.RecipeController.update(id: Long)
 
-
+#Return a list of recipes with the given tag
 GET 	/recipe/tag/:name		controllers.RecipeController.getRecipesByTag(name: String)
