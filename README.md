@@ -40,6 +40,3 @@ To get JSON response: accept: application/json
 ### -   Return a list of recipes with the tag specified in url
 -   Method: **GET**
 -   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipe/tag/:name
--   Method: **GET**
--   URL /recipe/tag/:name
--   Examlpe:
