@@ -20,4 +20,5 @@ DELETE	/recipe/:id					controllers.RecipeController.remove(id: Long)
 #Update the recipe with the given id
 PUT		/recipe/:id					controllers.RecipeController.update(id: Long)
 
+
 GET 	/recipe/tag/:name		controllers.RecipeController.getRecipesByTag(name: String)

@@ -265,10 +265,10 @@ public class RecipeController extends Controller{
 			
 			recipe.setIngredients(listIngredients);
 			System.out.println(recipe.getIngredients().get(0));	
-			recipe.save();
+			
 			
 		}
-			
+			recipe.save();
 			return ok ();
     	
     }
