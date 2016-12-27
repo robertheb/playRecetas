@@ -12,37 +12,34 @@ To get JSON response: accept: application/json
 
 ### -   Return a list of recipes.
 -   Method: **GET**
--   URL /recipes
--   Examlpe: 
+-   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipes
 
 ### -   Return the  recipe with the given id
 -   Method: **GET** 
--   URL /recipe/:id
--   Examlpe: 
+-   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipe/:id
 
 ### -   Return the recipe with the given name
 -   Method: **GET**
--   URL /recipe/name/:name
--   Examlpe: 
+-   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipe/name/:name
 
 ### -   Create a new recipe
 -   Method: **POST**
--   URL /recipes
--   Examlpe: 
+-   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipes
 -     Body:
 
 ### -   Remove the recipe with the given id
 -   Method: **DELETE**
--   URL /recipe/:id
--   Examlpe: 
+-   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipe/:id
 -       Body:
 
 ### -   Update the recipe with the given id
 -   Method: **PUT**
--   URL /recipe/:id
--   Examlpe: 
+-   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipe/:id
+-       Body:
 
 ### -   Return a list of recipes with the tag specified in url
+-   Method: **GET**
+-   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipe/tag/:name
 -   Method: **GET**
 -   URL /recipe/tag/:name
 -   Examlpe:
