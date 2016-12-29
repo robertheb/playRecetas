@@ -1,0 +1,12 @@
+@(recipes: List[models.Recipe])
+
+<recipes>
+
+@for(r <- recipes){
+<recipe id="@r.getId()">
+	<title>@r.getTitle</title>
+	<description>@r.getDescription</description>	
+</recipe>
+}
+
+</recipes>

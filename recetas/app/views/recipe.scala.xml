@@ -1,0 +1,14 @@
+@(recipe: models.Recipe)
+
+<recipe id="@recipe.getId()">
+	<title>@recipe.getTitle</title>
+	<preparedTime>@recipe.getPreparationTime</preparedTime>
+	<description>@recipe.getDescription</description>	
+
+	<ingredients>
+@for(i <- recipe.getIngredients){
+@ingredient(i)  
+}
+	
+	</ingredients>
+</recipe>

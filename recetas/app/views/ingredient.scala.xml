@@ -1,0 +1,6 @@
+@(ingredient: models.Ingredient)
+
+<ingredient id="@ingredient.getId()">
+	<name>@ingredient.getName</name>
+	<description>@ingredient.getDescription</description>
+</ingredient>
