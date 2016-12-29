@@ -26,6 +26,7 @@ To get JSON response: accept: application/json
 -   Method: **POST**
 -   http://ec2-35-156-213-232.eu-central-1.compute.amazonaws.com:9000/recipes
 -     Body: 
+
          {
         	"title": "Pato a la pequinesa",
         	"description": "Crujiente pato a la pequinesa",
