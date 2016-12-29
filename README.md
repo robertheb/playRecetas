@@ -7,7 +7,9 @@ Working with Play Framework Activator-1.3.12-minimal (Java) and H2 database.
 # API Methods
 
 You can obtain the information returned from calls to the API in XML or JSON format.
+
 To get XML response, you need to specify in header: accept: application/xml
+
 To get JSON response: accept: application/json
 
 ### -   Return a list of recipes.
